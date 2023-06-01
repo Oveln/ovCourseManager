@@ -4,7 +4,7 @@
             <Menu></Menu>
         </div>
         <div class="ov-box__right">
-            <Header></Header>
+            <!-- <Header></Header> -->
             <Content></Content>
         </div>
     </div>
@@ -12,8 +12,8 @@
 
 <script setup lang='ts'>
 import Menu from "./Menu/index.vue"
-import Header from "./Header/index.vue"
 import Content from "./Content/index.vue"
+
 
 </script>
 <style lang='scss' scoped>

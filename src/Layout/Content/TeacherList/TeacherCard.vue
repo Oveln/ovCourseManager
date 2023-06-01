@@ -1,13 +1,13 @@
 <template>
 <div class="ov-teachercard">
     <div class="ov-teachercard__up">
-        <img class="ov-teacher__up--avatar" :src="avt_url.toString()" alt="">
-        <span>{{ name }}</span>
+        <img class="ov-teacher__up--avatar" :src="avturl.toString()" alt="">
+        <span>{{ teacher.name }}</span>
         <div class="zhanwei">&nbsp</div>
         <button @click="cilck">展开课程</button>
     </div>
     <div class="ov-teachercard__down">
-        教师介绍：{{ description }}
+        教师介绍：{{ teacher.description }}
         <Transition>
             <div v-show="lesson_show" class="ov-teachercard__down--lesson">
                 课程列表
@@ -19,23 +19,19 @@
 
 <script setup lang='ts'>
 import {ref} from 'vue'
-export interface TeacherData {
-    name: String,
-    avt_url?: String,
-    description: String
-}
-let props = withDefaults(
-    defineProps<TeacherData>(), {
-        avt_url: ()=> 'src/assets/face.jpg'
-    }
-)
+import { type TeacherData } from '@/Layout/Content/index.vue';
+
+let props =defineProps<TeacherData>()
+let avturl = props.teacher.avt_url==null?'src/assets/face.jpg':props.teacher.avt_url
 let lesson_show = ref(false)
-const cilck = ()=>{console.log(props.avt_url.toString());lesson_show.value=!lesson_show.value;}
+
+const cilck = ()=>{console.log(avturl.toString());lesson_show.value=!lesson_show.value;}
 </script>
+
 <style lang='scss' scoped>
-// :hover {
-//     backgrou nd-color: #ccc;
-// }
+:hover {
+    background-color: #ccc;
+}
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
