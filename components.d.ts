@@ -11,9 +11,5 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Teacher: typeof import('./src/components/TeacherAdd/Teacher.vue')['default']
-    TeacherAdd: typeof import('./src/components/TeacherAdd/index.vue')['default']
-    TeacherCard: typeof import('./src/components/TeacherList/TeacherCard.vue')['default']
-    TeacherList: typeof import('./src/components/TeacherList/index.vue')['default']
   }
 }
