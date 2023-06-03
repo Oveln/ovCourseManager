@@ -1,7 +1,7 @@
 <template>
     <div class="ov-menu">
         <div class="ov-menu__item" @click="store.page='teacher_list'">教师列表</div>
-        <div class="ov-menu__item" @click="store.page='add_teacher'">添加教师</div>
+        <div class="ov-menu__item" @click="store.page='course_list'">课程列表</div>
         <div class='ov-menu__item' @click="store.page='about'">关于</div>
     </div>
 </template>

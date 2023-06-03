@@ -1,29 +1,49 @@
 <template>
-<div class="ov-teacher_list">
-    <ul>
-        <TransitionGroup name="list" tag="ul">
-            <li v-for="(item, index) in teachers" :key="index">
-                    <TeacherCard :teacher="item.teacher"></TeacherCard>
-            </li>
-        </TransitionGroup>
-    </ul>
-</div>
+    <div>
+        <div class="ov-topbar">
+            <button class="ov-topbar__button" @click="store.page='add_teacher'">添加教师</button>
+        </div>
+        <div class="ov-teacher_list">
+            <ul>
+                <TransitionGroup name="list" tag="ul">
+                    <li v-for="(item, index) in store.teachers" :key="index">
+                        <TeacherCard :data="item" :index="index"></TeacherCard>
+                    </li>
+                </TransitionGroup>
+            </ul>
+        </div>
+    </div>
 </template>
 
 <script setup lang='ts'>
 import TeacherCard from './TeacherCard.vue';
-import {ref , reactive} from 'vue'
-import { type TeacherData } from '@/Layout/Content/index.vue';
+import { useStore } from '@/store/store';
 
-let props = defineProps<{
-    teachers: TeacherData[]
-}>()
+let store = useStore()
 
 </script>
 <style lang='scss' scoped>
 @include b(teacher_list) {
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+@include b(topbar) {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    @include e(button) {
+        margin: 0px 10px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        margin-left: auto;
+        &:hover {
+            background-color: #ccc;
+        }
+    }
 }
 ul {
     list-style-type: none;

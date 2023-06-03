@@ -1,10 +1,13 @@
 <template>
     <div class="ov-content">
         <Transition>
-            <TeacherList v-show="store.page=='teacher_list'" :teachers="TeacherContent"></TeacherList>
+            <TeacherList v-show="store.page=='teacher_list'" :teacher="store.teachers"></TeacherList>
         </Transition>
         <Transition>
-            <TeacherAdd v-show="store.page=='add_teacher'" @commit="commit"></TeacherAdd>
+            <TeacherAdd v-show="store.page=='add_teacher'"></TeacherAdd>
+        </Transition>
+        <Transition>
+            <CourseList v-show="store.page=='course_list'"></CourseList>
         </Transition>
         <Transition>
             <About v-show="store.page=='about'"></About>
@@ -17,15 +20,9 @@ import { computed, ref, watch } from "vue";
 import TeacherList from "./TeacherList/index.vue"
 import TeacherAdd from "./TeacherAdd/index.vue"
 import About from "./about/index.vue"
-import { useStore } from "@/store/store";
+import CourseList from "./CourseList/index.vue"
+import { useStore, type TeacherData } from "@/store/store";
 
-export interface TeacherData {
-    teacher: {
-        name: String,
-        avt_url?: String,
-        description: String
-    }
-}
 let store = useStore()
 let teacher = {
     teacher: {
@@ -33,18 +30,31 @@ let teacher = {
         description: '55555'
     }
 }
-let TeacherContent = ref<TeacherData[]>([teacher])
-
-const commit = (new_teacher:TeacherData) => {
-    TeacherContent.value.push(new_teacher)
-}
-
 
 </script>
 <style lang='scss' scoped>
 @include b(content) {
     flex: 1;
     overflow: clip;
+    display: flex;
+    flex-direction: column;
+    @include e(topbar) {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        @include m(button) {
+            margin: 0px 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            cursor: pointer;
+            &:hover {
+                background-color: #ccc;
+            }
+        }
+    }
 }
 .v-enter-from,
 .v-leave-to {
