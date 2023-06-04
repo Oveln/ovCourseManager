@@ -9,7 +9,7 @@
         </div>
         <div class="ov-courselist__item" v-for="course in store.selectedCourses" :key="course.name">
             <div class="ov-courselist__item--name">{{course.name}}</div>
-            <div class="ov-courselist__item--teacher">{{store.teachers[course.teacherid].teacher.name}}</div>
+            <div class="ov-courselist__item--teacher">{{course.teachername}}</div>
             <div class="ov-courselist__item--price">{{course.price}}</div>
             <div class="ov-courselist__item--button">
                 <button @click="store.selectedCourses.splice(store.selectedCourses.indexOf(course),1)">删除</button>

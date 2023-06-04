@@ -1,24 +1,36 @@
 <template>
-    <div>
+    <div class="box">
         <div class="ov-topbar">
             <!-- 返回按钮 -->
-                <button class="ov-topbar__button" @click="store.page='teacher_list'">返回</button>
+                <el-button class="ov-topbar__button" @click="store.page='teacher_list'">返回</el-button>
         </div>
-        <div class="ov-inputbox">
-            <div class="ov-inputbox__item">
-                <div class="ov-inputbox__item--label">姓名:</div>
-                <input type="text" v-model="teacher.teacher.name">
-            </div>
-            <div class="ov-inputbox__item">
-                <div class="ov-inputbox__item--label">头像URL:</div>
-                <input type="text" v-model="teacher.teacher.avt_url">
-            </div>
-            <div class="ov-inputbox__item">
-                <div class="ov-inputbox__item--label">间接:</div>
-                <input type="text" v-model="teacher.teacher.description">
-            </div>
-            <button class="ov-inputbox__button" @click="_click">添加</button>
-        </div>
+        <el-form 
+            :model="teacher.teacher" 
+            label-width="120px"
+            :label-position="'left'"
+            style="margin: 30px;"
+            >
+            <el-form-item label="姓名">
+                <el-input v-model="teacher.teacher.name"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+                <el-radio-group v-model="teacher.teacher.sex">
+                    <el-radio :label="'男'">男</el-radio>
+                    <el-radio :label="'女'">女</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="头像URL">
+                <el-input v-model="teacher.teacher.avt_url"></el-input>
+            </el-form-item>
+            <el-form-item label="介绍">
+                <el-input v-model="teacher.teacher.description"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="_click">添加</el-button>
+                <!-- 重置按钮 -->
+                <el-button @click="teacher.teacher.name = '';teacher.teacher.avt_url = '';teacher.teacher.description = '';teacher.teacher.sex = '男'">重置</el-button>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
@@ -31,13 +43,14 @@ let teacher:TeacherData = reactive({
     teacher: {
         name: '',
         avt_url: '',
-        description: ''
+        description: '',
+        sex: '男'
     },
     courses: [] as CourseData[]
 })
 const _click = () => {
     console.log(teacher)
-    if(teacher.teacher.name === "" || teacher.teacher.description === ""){
+    if(teacher.teacher.name === "" || teacher.teacher.description === "" || teacher.teacher.sex ===""){
         alert("请填写完整信息")
         return
     }
@@ -51,49 +64,8 @@ const _click = () => {
 <style lang='scss' scoped>
 @include b(topbar) {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     padding: 10px;
     border-bottom: 1px solid #ccc;
-    //右对齐
-    @include e(button) {
-        margin: 0px 10px;
-        padding: 5px 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        margin-left: auto;
-        &:hover {
-            background-color: #ccc;
-        }
-    }
-}
-@include b(inputbox) {
-    display:flex;
-    flex-direction: column;
-    padding: 50px 50px 0px 50px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 5px 8px 10px #ccc;
-    margin: 15px;
-    overflow: auto;
-    @include e(item) {
-        display: flex;
-        margin: 5px 0px;
-        @include m(label) {
-            min-width: 8em;
-            
-        }
-    }
-    @include e(button) {
-        margin: 20px ;
-        padding: 5px 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-        cursor: pointer;
-        &:hover {
-            background-color: #ccc;
-        }
-    }
 }
 </style>

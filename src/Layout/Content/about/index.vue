@@ -7,7 +7,7 @@
             本页面采用Vue3.3+Typescript编写，使用了pinia作为组件状态管理工具。存储在<a href="https://github.com/Oveln/ovCourseManager">Github</a>，构建方法参考Readme
         </p>
         <p>
-            
+            实现了教师-课程管理，可以选课添加到课程列表，删除课程以及教师，同时课程列表中的课会自动删除
         </p>
     </div>
 </template>

@@ -1,5 +1,6 @@
 {
   "files": [],
+  "include": ["**/*.d.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"
@@ -14,5 +15,7 @@
   "compilerOptions": {
     // ...
     "types": ["element-plus/global"]
-  }
+  },
+  "exclude": [ "node_modules"],
+  "moduleResolution": "classic"
 }

@@ -2,116 +2,139 @@
 <div class="ov-teachercard">
     <div class="ov-teachercard__up">
         <img class="ov-teacher__up--avatar" :src="avturl.toString()" alt="">
-        <span>{{ data.teacher.name }}</span>
-        <div class="zhanwei">&nbsp</div>
+        <span>姓名：{{ data.teacher.name }}   性别：{{ data.teacher.sex }}</span>
         <!-- 删除教师 -->
-        <button @click="delete_teacher">删除教师</button>
-        <button @click="cilck">{{ lesson_show?'合上课程':'展开课程'}}</button>
+        <el-button-group class="ml-4">
+            <el-button type="danger" @click="delete_teacher">删除</el-button>
+            <el-button type="primary" @click="cilck" :icon="lesson_show?ArrowUp:ArrowDown"></el-button>
+        </el-button-group>
         <!-- 添加课程 -->
     </div>
     <div class="ov-teachercard__down">
-        教师介绍：{{ data.teacher.description }}
+        <!-- 教师简介 -->
+        <div class="ov-teachercard__down--description">
+            <span>{{ data.teacher.description }}</span>
+        </div>
         <Transition>
-            <div v-show="lesson_show" class="ov-teachercard__down--lesson">
-                <!-- 课程列表 -->
-                <div class="ov-teachercard__down--lesson__item">
-                    <div class="ov-teachercard__down--lesson__item--name">课程名称</div>
-                    <div class="ov-teachercard__down--lesson__item--description">课程描述</div>
-                    <div class="ov-teachercard__down--lesson__item--price">学分</div>
-                    <div class="ov-teachercard__down--lesson__item--button">操作</div>
-                </div>
-                <TransitionGroup name="list">
-                    <div class="ov-teachercard__down--lesson__item" v-for="lesson in data.courses" :key="lesson.name">
-                        <div class="ov-teachercard__down--lesson__item--name">{{ lesson.name }}</div>
-                        <div class="ov-teachercard__down--lesson__item--description">{{ lesson.description }}</div>
-                        <div class="ov-teachercard__down--lesson__item--price">{{ lesson.price }}</div>
-                        <div class="ov-teachercard__down--lesson__item--button">
-                            <button @click="selectCourse(lesson)">选课</button>
-                        </div>
-                    </div>
-                </TransitionGroup>
-                <!-- 添加课程 -->
-                <div class="ov-teachercard__down--lesson__item">
-                    <div class="ov-teachercard__down--lesson__item--name">
-                        <input type="text" placeholder="课程名称" v-model="lesson.name" />
-                    </div>
-                    <div class="ov-teachercard__down--lesson__item--description">
-                        <input type="text" placeholder="课程描述" v-model="lesson.description" />
-                    </div>
-                    <div class="ov-teachercard__down--lesson__item--price">
-                        <input type="text" placeholder="学分" v-model="lesson.price" />
-                    </div>
-                    <div class="ov-teachercard__down--lesson__item--button">
-                        <button @click="addCourse">+</button>   
-                    </div>
-                </div>
+            <div class="ov-teachercard__down--down" v-show="lesson_show" >
+                <el-button style="width: 60px; margin-left: auto;" type="primary" @click="add_lesson_show=true" :icon="Plus"></el-button>
+                <el-table :data="data.courses" style="width: 100%">
+                    <el-table-column prop="name" label="课程名称"></el-table-column>
+                    <el-table-column prop="description" label="课程描述"></el-table-column>
+                    <el-table-column prop="price" label="学分"></el-table-column>
+                    <el-table-column label="操作">
+                        <template #default="scope">
+                            <el-button @click="selectCourse(scope.row)" :icon="Select"></el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
             </div>
         </Transition>
     </div>
 </div>
+<el-dialog
+    v-model="add_lesson_show"
+    title="添加课程"
+    width="30%"
+    :before-close="()=>{add_lesson_show=false}"
+    >
+    <el-form label-width="80px">
+        <el-form-item label="课程名称">
+            <el-input v-model="add_lesson.name"></el-input>
+        </el-form-item>
+        <el-form-item label="课程描述">
+            <el-input v-model="add_lesson.description"></el-input>
+        </el-form-item>
+        <el-form-item label="学分">
+            <el-input v-model="add_lesson.price"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="add_lesson_show=false">取消</el-button>
+            <el-button type="primary" @click="addCourse">添加</el-button>
+        </el-form-item>
+
+    </el-form>
+    </el-dialog>
 </template>
 
 <script setup lang='ts'>
 import {ref} from 'vue'
-import { useStore, type TeacherData, type CourseData } from '@/store/store';
+import { useStore, type TeacherData, type CourseData } from '@/store/store'
+import {Plus,Select,ArrowDown,ArrowUp} from '@element-plus/icons-vue'
+// import ElMessage from 'element-plus/lib/components/message/index.js';
 
 let store = useStore()
 
-let props = defineProps<{ data: TeacherData, index:number }>()
+let props = defineProps<{ data: TeacherData}>()
 //如果avt_url为空串，则显示默认头像
-let avturl = ref(props.data.teacher.avt_url === "" ? "src/assets/face.jpg" : props.data.teacher.avt_url)
+let avturl = ref(props.data.teacher.avt_url === "" ? "/face/face.jpg" : props.data.teacher.avt_url)
 //判断avt_url是否能正常显示
 let img = new Image()
 img.src = avturl.toString()
 img.onerror = () => {
-    avturl.value = "src/assets/face.jpg"
+    avturl.value = "/face/face.jpg"
 }
 let lesson_show = ref(false)
+let add_lesson_show = ref(false)
 
-let lesson = ref<CourseData>({
+let add_lesson = ref<CourseData>({
     name: "",
     description: "",
     price: 0,
-    //props.teacher在store.teacher中的索引
-    teacherid: props.index
+    teachername: props.data.teacher.name
 })
 
 const delete_teacher = ()=>{
-    store.teachers.splice(props.index,1)
-    alert("删除成功")
+    // 将stroe.selectedCourses中的该教师的课程删除
+    store.selectedCourses = store.selectedCourses.filter((item)=>item.teachername!==props.data.teacher.name)
+    // 将store.teachers中的该教师删除
+    store.teachers = store.teachers.filter((item)=>item.teacher.name!==props.data.teacher.name)
 }
 const cilck = ()=>{console.log(avturl.toString());lesson_show.value=!lesson_show.value;}
 const selectCourse = (lesson:CourseData)=>{
     //判断是否已经有lesson了
+    console.log(lesson)
     if(store.selectedCourses.find((item)=>item.name===lesson.name)){
-        alert("已经添加过该课程了")
+        ElMessage.error("已经添加过该课程了")
         return
     }
     store.selectedCourses.push(lesson)
     //添加成功
-    alert("添加成功")
+    ElMessage.success("添加成功")
 }
 const addCourse = ()=>{
     //判断是否已经有lesson了
-    if(store.teachers[props.index].courses.find((item)=>item.name===lesson.value.name)){
-        alert("已经添加过该课程了")
+    if(store.selectedCourses.find((item)=>item.name===add_lesson.value.name)){
+        ElMessage.error("已经添加过该课程了")
         return
     }
+    
     //判断是否有空值
-    if(lesson.value.name===""||lesson.value.description===""||lesson.value.price===0){
-        alert("请填写完整信息")
+    if(add_lesson.value.name===""||add_lesson.value.description===""||add_lesson.value.price===0){
+        ElMessage.error("请填写完整信息")
         return
     }
+    
     //创建lesson拷贝
-    let lesson_copy = JSON.parse(JSON.stringify(lesson.value))
+    let lesson_copy = JSON.parse(JSON.stringify(add_lesson.value))
     console.log(lesson_copy)
-    store.teachers[props.index].courses.push(lesson_copy)
+    // store.teachers[props.index].courses.push(lesson_copy)
+    //在store.teachers中添加课程
+    store.teachers.forEach((item)=>{
+        if(item.teacher.name===add_lesson.value.teachername){
+            item.courses.push(lesson_copy)
+        }
+    })
+
+
     //还原lesson
-    lesson.value.name = ""
-    lesson.value.description = ""
-    lesson.value.price = 0
+    add_lesson.value.name = ""
+    add_lesson.value.description = ""
+    add_lesson.value.price = 0
     //添加成功
     // alert("添加成功")
+    add_lesson_show.value = false
+    ElMessage.success("添加成功")
 }
 </script>
 
@@ -150,6 +173,7 @@ const addCourse = ()=>{
         flex: 1;
         display: flex;
         align-items: center;
+        width: 100%;
         img{
             height: 50px;
             border: 1px solid #ccc;
@@ -159,18 +183,10 @@ const addCourse = ()=>{
         span{
             margin: 0px 10px;
         }
-        .zhanwei {flex:1;}
         border-bottom: 1px solid #ccc;
-        button{
-            margin: 0px 10px;
-            width: 100px;
-            height: 30px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background-color: #fff;
-            &:hover{
-                background-color: #ccc;
-            }
+        .el-button-group {
+            margin-left: auto;
+            
         }
     }
     @include e(down) {
@@ -178,65 +194,10 @@ const addCourse = ()=>{
         flex-direction: column;
         flex: 3;
         // margin: 10px 5px;
-        @include m(lesson) {
-            margin-top: 10px;
-            padding: 0;
-            width: 100%;
-            border-top: 1px solid #ccc;
-            flex: 1;
-            @include e(item) {
-                display: flex;
-                flex-direction: row;
-                padding: 5px 10px;
-                border-bottom: 1px solid #ccc;
-                text-align: center;
-                @include m(name) {
-                    flex: 1;
-                    input {
-                        height: 100%;
-                        border-radius: 5px;
-                        border: 1px solid #ccc;
-                        padding: 0 10px;
-                        text-align: center;
-                    }
-                }
-                @include m(description) {
-                    border-left: 1px solid #ccc;
-                    border-right: 1px solid #ccc;
-                    padding: 0 10px;
-                    flex: 2;
-                    input {
-                        height: 100%;
-                        border-radius: 5px;
-                        border: 1px solid #ccc;
-                        padding: 0 10px;
-                        text-align: center;
-                    }
-                }
-                @include m(price) {
-                    flex: 1;
-                    input {
-                        height: 100%;
-                        border-radius: 5px;
-                        border: 1px solid #ccc;
-                        padding: 0 10px;
-                        text-align: center;
-                    }
-                }
-                @include m(button) {
-                    flex: 1;
-                    button{
-                        width: 100px;
-                        height: 30px;
-                        border-radius: 5px;
-                        border: 1px solid #ccc;
-                        background-color: #fff;
-                        &:hover{
-                            background-color: #ccc;
-                        }
-                    }
-                }
-            }
+        @include m(down) {
+            display: flex;
+            flex-direction: column;
+
         }
     }
     

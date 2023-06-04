@@ -7,7 +7,7 @@
             <ul>
                 <TransitionGroup name="list" tag="ul">
                     <li v-for="(item, index) in store.teachers" :key="index">
-                        <TeacherCard :data="item" :index="index"></TeacherCard>
+                        <TeacherCard :data="item"></TeacherCard>
                     </li>
                 </TransitionGroup>
             </ul>
