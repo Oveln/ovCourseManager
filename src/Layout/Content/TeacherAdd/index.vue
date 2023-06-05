@@ -1,9 +1,9 @@
 <template>
-    <div class="box">
-        <div class="ov-topbar">
-            <!-- 返回按钮 -->
-                <el-button class="ov-topbar__button" @click="store.page='teacher_list'">返回</el-button>
-        </div>
+    <el-dialog
+        v-model="imshow"
+        title="添加教师"
+        :before-close="before_close"
+        >
         <el-form 
             :model="teacher.teacher" 
             label-width="120px"
@@ -31,19 +31,25 @@
                 <el-button @click="teacher.teacher.name = '';teacher.teacher.avt_url = '';teacher.teacher.description = '';teacher.teacher.sex = '男'">重置</el-button>
             </el-form-item>
         </el-form>
-    </div>
+    </el-dialog>
 </template>
 
 <script setup lang='ts'>
 import { useStore, type TeacherData, type CourseData } from '@/store/store';
+import TeacherList from "../TeacherList/index.vue"
 import { reactive } from 'vue';
 
+let props = defineProps<{show:boolean,before_close:()=>void}>()
+let imshow = ref(props.show)
+watch(()=>props.show,(newval)=>imshow.value = newval)
 let store = useStore();
 let teacher:TeacherData = reactive({
     teacher: {
         name: '',
         avt_url: '',
         description: '',
+        phonenumber: '',
+        place: '',
         sex: '男'
     },
     courses: [] as CourseData[]
@@ -58,7 +64,7 @@ const _click = () => {
     let teacher_copy = JSON.parse(JSON.stringify(teacher))
     store.teachers.push(teacher_copy)
     
-    store.page = 'teacher_list'
+    store.page = TeacherList
 }
 </script>
 <style lang='scss' scoped>

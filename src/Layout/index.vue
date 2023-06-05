@@ -20,6 +20,7 @@ import Content from "./Content/index.vue"
 @include b(box) {
     @include bfc;
     display: flex;
+    width: 100%;
 
     @include e(right) {
         display: flex;

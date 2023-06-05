@@ -5,14 +5,17 @@
             <div class="ov-courselist__item--name">课程名称</div>
             <div class="ov-courselist__item--teacher">教师</div>
             <div class="ov-courselist__item--price">学分</div>
+            <div class="ov-courselist__item--price">地点</div>
             <div class="ov-courselist__item--button">操作</div>
         </div>
         <div class="ov-courselist__item" v-for="course in store.selectedCourses" :key="course.name">
             <div class="ov-courselist__item--name">{{course.name}}</div>
             <div class="ov-courselist__item--teacher">{{course.teachername}}</div>
             <div class="ov-courselist__item--price">{{course.price}}</div>
+            <div class="ov-courselist__item--price">{{course.place}}</div>
             <div class="ov-courselist__item--button">
-                <button @click="store.selectedCourses.splice(store.selectedCourses.indexOf(course),1)">删除</button>
+                <!-- <button @click="store.selectedCourses.splice(store.selectedCourses.indexOf(course),1)">删除</button> -->
+                <el-button @click="store.selectedCourses.splice(store.selectedCourses.indexOf(course),1)" type="danger" :icon="Delete"></el-button>
             </div>
         </div>
     </div>
@@ -21,6 +24,7 @@
 
 <script setup lang='ts'>
 import { useStore } from '@/store/store';
+import { Delete } from '@element-plus/icons-vue'
 
 let store = useStore()
 
@@ -60,15 +64,6 @@ let store = useStore()
         @include m(button) {
             text-align: center;
             flex: 1;
-            button {
-                padding: 10px;
-                border-radius: 10%;
-                border: none;
-                background-color: #ccc;
-                &:hover {
-                    background-color: #aaa;
-                }
-            }
         }
     }
 }
