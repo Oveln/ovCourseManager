@@ -1,7 +1,7 @@
 <template>
     <el-dialog
         v-model="imshow"
-        title="添加教师"
+        title="更新教师信息"
         :before-close="before_close"
         >
         <el-form 
@@ -11,7 +11,15 @@
             style="margin: 30px;"
             >
             <el-form-item label="姓名">
-                <el-input v-model="teacher.teacher.name"></el-input>
+                <!-- <el-input v-model="teacher.teacher.name"></el-input> -->
+                <el-select v-model="teacher.teacher.name" filterable placeholder="请选择">
+                    <el-option
+                        v-for="item in store.teachers"
+                        :key = "item.teacher.name"
+                        :label="item.teacher.name"
+                        :value="item.teacher.name">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="性别">
                 <el-radio-group v-model="teacher.teacher.sex">
@@ -32,7 +40,7 @@
                 <el-input v-model="teacher.teacher.description"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="_click">添加</el-button>
+                <el-button type="primary" @click="_click">更新</el-button>
                 <!-- 重置按钮 -->
                 <el-button @click="teacher.teacher.name = '';teacher.teacher.avt_url = '';teacher.teacher.description = '';teacher.teacher.sex = '男'">重置</el-button>
             </el-form-item>
@@ -44,6 +52,7 @@
 import { useStore, type TeacherData, type CourseData } from '@/store/store';
 import TeacherList from "../TeacherList/index.vue"
 import { reactive } from 'vue';
+
 
 let props = defineProps<{show:boolean,before_close:()=>void}>()
 let imshow = ref(props.show)
@@ -60,17 +69,28 @@ let teacher:TeacherData = reactive({
     },
     courses: [] as CourseData[]
 })
+watch(()=>teacher.teacher.name,(newval)=>{
+    console.log(newval)
+    for(let i = 0;i<store.teachers.length;i++){
+        if(store.teachers[i].teacher.name === newval){
+            teacher.teacher = JSON.parse(JSON.stringify(store.teachers[i].teacher))
+            teacher.courses = JSON.parse(JSON.stringify(store.teachers[i].courses))
+
+            break
+        }
+    }
+})
 const _click = () => {
     console.log(teacher)
     if(teacher.teacher.name === "" || teacher.teacher.description === "" || teacher.teacher.sex ==="" || teacher.teacher.phonenumber === "" || teacher.teacher.place === ""){
         ElMessage.error("请填写完整信息")
         return
     }
-    //检查是否有重复的名字
+    //删除原先的数据
     for(let i = 0;i<store.teachers.length;i++){
         if(store.teachers[i].teacher.name === teacher.teacher.name){
-            ElMessage.error("已有重复的名字")
-            return
+            store.teachers.splice(i,1)
+            break
         }
     }
     //创建备份，放入到teachers中
@@ -78,7 +98,7 @@ const _click = () => {
     store.teachers.push(teacher_copy)
     
     store.page = TeacherList
-    ElMessage.success("添加成功")
+    ElMessage.success("更新成功")
     props.before_close()
 }
 </script>

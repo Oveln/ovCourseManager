@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
 import TeacherList from "../Layout/Content/TeacherList/index.vue"
-import TeacherAdd from "../Layout/Content/TeacherAdd/index.vue"
-import About from "../Layout/Content/about/index.vue"
-import CourseList from "../Layout/Content/CourseList/index.vue"
 
 export interface CourseData {
     name: string,

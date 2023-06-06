@@ -3,7 +3,8 @@
         <div class="ov-topbar">
             <!-- 导入文件 -->
             <!-- <el-button class="ov-topbar__button" @click="import_show=true">导入信息</el-button> -->
-            <el-button class="ov-topbar__button" @click="add_teacher_show=true">添加教师</el-button>
+            <el-button class="ov-topbar__button" @click="update_teacher_show=true">更新</el-button>
+            <el-button class="ov-topbar__button" @click="add_teacher_show=true">添加</el-button>
         </div>
         <div class="ov-teacher_list">
         <TransitionGroup name="list" appear tag="ul" mode="out-in">
@@ -16,7 +17,8 @@
         </TransitionGroup>
         </div>
         <TeacherAdd :show="add_teacher_show" :before_close="()=>{add_teacher_show=false}"></TeacherAdd>
-        <Import :show="import_show" :before_close="()=>{import_show=false}"></Import>
+        <!-- <Import :show="import_show" :before_close="()=>{import_show=false}"></Import> -->
+        <TeacherUpdate :show="update_teacher_show" :before_close="()=>{update_teacher_show=false}"></TeacherUpdate>
 
     </div>
 </template>
@@ -24,11 +26,12 @@
 <script setup lang='ts'>
 import TeacherCard from './TeacherCard.vue';
 import TeacherAdd from "../TeacherAdd/index.vue"
+import TeacherUpdate from "../TeacherUpdate/index.vue"
 import { useStore } from '@/store/store';
 
 let store = useStore()
 let add_teacher_show = ref(false)
-let import_show = ref(false)
+let update_teacher_show = ref(false)
 
 </script>
 <style lang='scss' scoped>
