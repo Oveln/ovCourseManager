@@ -1,52 +1,35 @@
 # ovCourseManager
 
-This template should help get you started developing with Vue 3 in Vite.
+## 安装环境
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+```
+nodejs(>17.0.0),pnpm(@lateset)
+```
 
 ```sh
 pnpm install
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Type-Check, Compile and Minify for Production
+## 安装命令
 
 ```sh
 pnpm build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## 功能说明
 
-```sh
-pnpm test:unit
-```
+提供了课程-选课管理的前端页面，共有三个页面
 
-### Lint with [ESLint](https://eslint.org/)
+### 教师列表
 
-```sh
-pnpm lint
-```
+以教师为单位，统计了教师信息和教师所教授的课程信息
+- 在下拉菜单中选择课程，添加到课程列表中
+- 删除教师后，课程列表中所对应的该教师课程一并删除
+- 添加或删除课程，课程被删除后课程列表中的课程一并删除
+
+### 课程列表
+
+- 统计了当前所选的所有课程
+
+## 后端数据库管理应用
+
+[ovCourseHttp](https://github.com/Oveln/OvCourseHttpServer)
