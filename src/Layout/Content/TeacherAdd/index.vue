@@ -57,14 +57,23 @@ let teacher:TeacherData = reactive({
 const _click = () => {
     console.log(teacher)
     if(teacher.teacher.name === "" || teacher.teacher.description === "" || teacher.teacher.sex ===""){
-        alert("请填写完整信息")
+        ElMessage.error("请填写完整信息")
         return
+    }
+    //检查是否有重复的名字
+    for(let i = 0;i<store.teachers.length;i++){
+        if(store.teachers[i].teacher.name === teacher.teacher.name){
+            ElMessage.error("已有重复的名字")
+            return
+        }
     }
     //创建备份，放入到teachers中
     let teacher_copy = JSON.parse(JSON.stringify(teacher))
     store.teachers.push(teacher_copy)
     
     store.page = TeacherList
+    ElMessage.success("请填写完整信息")
+    props.before_close()
 }
 </script>
 <style lang='scss' scoped>

@@ -58,6 +58,46 @@ export const useStore = defineStore('state',{
                     place: '床',
                     teachername: 'Oveln'
                 }]
+            },{
+                teacher: {
+                    name: 'Oveln1',
+                    sex: '男',
+                    avt_url: '',
+                    phonenumber: '12345678910',
+                    place: '寝室',
+                    description: '摸鱼大王'
+                },
+                courses:[]
+            },{
+                teacher: {
+                    name: 'Oveln2',
+                    sex: '男',
+                    avt_url: '',
+                    phonenumber: '12345678910',
+                    place: '寝室',
+                    description: '摸鱼大王'
+                },
+                courses:[]
+            },{
+                teacher: {
+                    name: 'Oveln3',
+                    sex: '男',
+                    avt_url: '',
+                    phonenumber: '12345678910',
+                    place: '寝室',
+                    description: '摸鱼大王'
+                },
+                courses:[]
+            },{
+                teacher: {
+                    name: 'Oveln4',
+                    sex: '男',
+                    avt_url: '',
+                    phonenumber: '12345678910',
+                    place: '寝室',
+                    description: '摸鱼大王'
+                },
+                courses:[]
             }],
             //已选课程
             selectedCourses: [{

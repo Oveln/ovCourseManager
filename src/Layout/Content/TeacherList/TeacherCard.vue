@@ -232,8 +232,8 @@ const addCourse = ()=>{
 }
 
 @include b(teachercard) {
-    // display: flex;
-    // flex-direction:column;
+    display: flex;
+    flex-direction:column;
     padding: 5px 10px;
     margin: 15px;
     border-radius: 5px;
@@ -245,6 +245,7 @@ const addCourse = ()=>{
         flex: 1;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         // width: 100%;
         padding: 10px 5px;
         @include m(info) {

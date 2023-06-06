@@ -1,5 +1,5 @@
 <template>
-    <div class="ov-teacherlist">
+    <div class="ov-teacherlistbox">
         <div class="ov-topbar">
             <!-- 导入文件 -->
             <!-- <el-button class="ov-topbar__button" @click="import_show=true">导入信息</el-button> -->
@@ -35,10 +35,13 @@ let import_show = ref(false)
 ::-webkit-scrollbar {
   display: none; /* Chrome Safari */
 }
-@include b(teacherlist) {
+@include b(teacherlistbox) {
+    width: 100%;
+    flex:1;
     display: flex;
     flex-direction: column;
-    overflow:hidden;
+    overflow:visible;
+    height: 100%;
 }
 @include b(teacher_list) {
     display: flex;
